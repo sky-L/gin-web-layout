@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/skylee/gin-web-layout/internal/application"
 	"github.com/skylee/gin-web-layout/pkg/signals"
 	"github.com/skylee/gin-web-layout/router"
 	"github.com/spf13/cobra"
@@ -24,8 +25,10 @@ var apiCmd = &cobra.Command{
 		address := fmt.Sprintf("%v:%v", "0.0.0.0", 8080)
 		log.Printf("listening and serving HTTP on %s\n", address)
 
+		app := application.NewApp()
+
 		engine := gin.New()
-		router.InitRouter(engine)
+		router.InitRouter(engine, app)
 
 		go Run(engine)
 
