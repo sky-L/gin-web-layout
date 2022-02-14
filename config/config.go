@@ -8,24 +8,23 @@ import (
 )
 
 type Config struct {
-	MySqlConfig MySqlConfig
+	MySqlConfig MySqlConfig `mapstructure:"mysql_config"'`
 }
 
 func InitConfig() *Config {
-	config := Config{}
+	config := &Config{}
 
 	viper.AutomaticEnv()
-	// file config
 	viper.SetConfigType("yml")
 
 	conf := "./config/conf.yml"
-	// parse config
 	file := helper.Must(os.Open(conf)).(*os.File)
 	defer file.Close()
+
 	helper.Must(nil, viper.ReadConfig(file))
 	helper.Must(nil, viper.Unmarshal(config))
 
 	fmt.Println(config)
 
-	return &config
+	return config
 }

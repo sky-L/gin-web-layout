@@ -1,7 +1,7 @@
 package config
 
 type MySqlConfig struct {
-	Default DB
+	Default DB `mapstructure:"default"`
 }
 
 type DB struct {
