@@ -1,0 +1,5 @@
+mysql_config:
+  default:
+    data_source_name: ""
+    max_open_conns: 200
+    max_idle_conns: 100

@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"github.com/thinkeridea/go-extend/helper"
 	"os"
@@ -23,8 +22,6 @@ func InitConfig() *Config {
 
 	helper.Must(nil, viper.ReadConfig(file))
 	helper.Must(nil, viper.Unmarshal(config))
-
-	fmt.Println(config)
 
 	return config
 }
