@@ -1,10 +1,12 @@
 package default_db
 
 import (
+	"database/sql"
 	"github.com/skylee/gin-web-layout/config"
 	"github.com/thinkeridea/go-extend/helper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"time"
 )
 
 type Mysql struct {
@@ -12,11 +14,17 @@ type Mysql struct {
 }
 
 func NewMysql(db config.DB) *Mysql {
-	s := &Mysql{
-		DB: helper.Must(gorm.Open(mysql.Open(db.DataSourceName))).(*gorm.DB),
-	}
+	client := helper.Must(gorm.Open(mysql.Open(db.DataSourceName))).(*gorm.DB)
+	sqlDB := helper.Must(client.DB()).(*sql.DB)
+	sqlDB.SetMaxIdleConns(db.MaxIdleConns)
+	sqlDB.SetMaxOpenConns(db.MaxOpenConns)
+	sqlDB.SetConnMaxLifetime(time.Minute)
 
-	s.DB.Debug()
+	client.Debug()
+
+	s := &Mysql{
+		DB: client,
+	}
 
 	return s
 }

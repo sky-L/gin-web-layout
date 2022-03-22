@@ -24,7 +24,7 @@
 
 初始化一个 rootCmd 来管理项目中所有的模块 
 
-```
+```php
 // main.go
 
 func main() {
@@ -141,7 +141,7 @@ func OnServiceStop(timeout time.Duration) {
 ```
 这样就支持了热启动，然后就编译启动，ctrl+c， 他为什么没阻塞 5 秒，直接就退出了？
 
-因为 ctrl+c 的时候，会检查是否有待处理的请求，如没有就会直接退出。我们可以模拟一个耗时请求:
+因为 ctrl+c 的时候，会检查是否有待处理的请求，如没有就会直接退出。我们可以模拟一个耗时请求: 
 ```
 // router/router.go
     engine.GET("/", func(c *gin.Context) {
