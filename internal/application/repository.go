@@ -8,10 +8,10 @@ import (
 // 数据原子方法
 
 type Repository struct {
-	Blog *blog.BlogRepo
+	Blog blog.RepositoryInterface
 }
 
-func NewRepository(storage *storage.Storage) *Repository  {
+func NewRepository(storage *storage.Storage) *Repository {
 	return &Repository{
 		Blog: blog.NewBlogRepo(storage),
 	}

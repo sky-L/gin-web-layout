@@ -6,14 +6,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repository interface {
+type RepositoryInterface interface {
+	FindById(id int) (default_db.Blog, error)
 }
 
 type BlogRepo struct {
 	DB *gorm.DB
 }
 
-func NewBlogRepo(storage *storage.Storage) *BlogRepo {
+func NewBlogRepo(storage *storage.Storage) RepositoryInterface {
 	return &BlogRepo{storage.Default.DB}
 }
 

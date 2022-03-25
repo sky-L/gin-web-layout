@@ -20,12 +20,15 @@ internal git:(master) ✗ tree -L 1
 ├── service
 └── storage
 ```
+调用链路为 API -> service -> repository -> ( DB：storage -> models)。
 
-从目录结构可以看到要设计的模块， 从最里层开始设计即 `storage`。各个模块初始化放在 `application` 里，返回一个 App 对象:
+从目录结构可以看到要设计的模块， 从最里层开始设计即 `storage`，`models` 是数据库和 `struct` 的映射，看一下即可。说到这里，想起有人开发了一些好用的工具：[SQL2Struct](https://printlove.cn/tools/sql2gorm/) 很好用。
 
+各个模块初始化放在 `application` 里，返回一个 `*App` 对象， 先看一下 app 里的整体样子，再各模块分别设计:
+
+### 模块概览
 -  file: application/app.go
 ```php
-
 type App struct {
 	config *config.Config
 	*Repository
@@ -51,7 +54,7 @@ func NewApp() *App {
 }
 ```
 
-### 配置
+#### 配置
 
 使用一个包 `github.com/spf13/viper`, 功能就是把配置文件内容直接映射为一个结构体。为什么用这个包，我想 star 数说明一切了。
 - file: config/config.go
@@ -74,6 +77,10 @@ func InitConfig() *Config {
 
 ```
 
+### storage
+
+新建 `./internal/storage/storage.go`，从这里开始配置数据库， Mysql, Redis，ES... , 本次只配置 Mysql
+
 可以看到有个 `helper.Must` 这是属于包 `github.com/thinkeridea/go-extend/helper"`，配置有错误的时候，直接 `panic` 终止程序。
 以配置数据库示例：
 - file: config/config.go
@@ -95,7 +102,28 @@ type Config struct {
 即使是自建库也会使用三方的中间件来做，而不会在业务代码做读写分离。
 
 ### 配置数据库
-数据库使用 `gorm`， 
+数据库使用 `gorm`，增加如下配置，并配置最大链接数,最大等待链接数
+- file: storage/default_db/mysql.go
+```php
+type Mysql struct {
+	DB *gorm.DB
+}
+func NewMysql(db config.DB) *Mysql {
+	client := helper.Must(gorm.Open(mysql.Open(db.DataSourceName))).(*gorm.DB)
+	sqlDB := helper.Must(client.DB()).(*sql.DB)
+	// 赋值为指针类型，修改生效
+	sqlDB.SetMaxIdleConns(db.MaxIdleConns)
+	sqlDB.SetMaxOpenConns(db.MaxOpenConns)
+	sqlDB.SetConnMaxLifetime(time.Minute)
+	client.Debug()
+	s := &Mysql{
+		DB: client,
+	}
+	return s
+}
+```
+可以看到 `Mysql.DB` 为大写，这个是为了支持在 service 可直接读取数据库。
+
 
 
 
