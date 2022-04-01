@@ -1,7 +1,7 @@
 package protocol
 
 type BlogListReq struct {
-	Id int `json:"id" form:"id" validate:"required" binding:"required"`
+	Id   int `form:"id" binding:"required"`
 }
 
 type BlogResp struct {
