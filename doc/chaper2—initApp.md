@@ -98,6 +98,7 @@ type Config struct {
 	MySqlConfig MySqlConfig `mapstructure:"mysql_config"'`
 }
 ```
+
 数据库一般会有多个，示例中定义了一个 `default` 数据库。 多数情况下，多库并非是为了读写分离，现在的实际生产环境，使用阿里云的时候，数据库连接就是读写的链接，会有 `rwlb` 标识。
 即使是自建库也会使用三方的中间件来做，而不会在业务代码做读写分离。
 
@@ -122,6 +123,7 @@ func NewMysql(db config.DB) *Mysql {
 	return s
 }
 ```
+
 可以看到 `Mysql.DB` 为大写，这个是为了支持在 service 可直接读取数据库。
 
 再配置 `storage` ，作为数据库的统一入。以后再扩展数据库，统一在这里配置，Redis,Es.. 等等
@@ -153,10 +155,12 @@ func NewBlogRepo(storage *storage.Storage) RepositoryInterface {
 	return &BlogRepo{storage.Default.DB}
 }
 ```
+
 可以看到，返回的是一个 `interface`， 这样的目的是在 `service` 层直接注入这个 interface， 在新增 repository 方法的时候，无需改动 service 的注入
 
 ## service 
 还是以 blog demo 示例：把数据层注入到属性
+- file : service/blog_service/blog
 
 ```php
 

@@ -6,10 +6,10 @@ import (
 )
 
 type BlogService struct {
-	repo *blog.BlogRepo
+	repo blog.RepositoryInterface
 }
 
-func NewBlogService(repo *blog.BlogRepo) *BlogService {
+func NewBlogService(repo blog.RepositoryInterface) *BlogService {
 	return &BlogService{
 		repo: repo,
 	}
@@ -18,6 +18,6 @@ func NewBlogService(repo *blog.BlogRepo) *BlogService {
 func (b *BlogService) List(id int) (default_db.Blog, error) {
 	// 1 直接调用 model
 	// b.repo.DB.Model().Find().Error
-	// 2 使用resp
+	// 2 使用repo
 	return b.repo.FindById(id)
 }
