@@ -1,5 +1,7 @@
 package logger
 
-func InitLog() {
+import "github.com/sirupsen/logrus"
 
+func InitLog() {
+	logrus.Info("aa")
 }
