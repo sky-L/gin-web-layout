@@ -5,14 +5,38 @@ import (
 	"testing"
 )
 
+func D() (t int) {
+	return 2
+}
+
+func DeferFunc4() (t int) {
+	defer func(i int) {
+		fmt.Println(i)
+		fmt.Println(t)
+	}(t)
+	t = 1
+	return 2
+}
+
+func DeferFunc3(i int) (t int) {
+	defer func() {
+		t += i
+	}()
+	return 2
+}
+
 func TestDelSlice(t *testing.T) {
 
-	i := 1
-	a := []int{1,3}
-	a = append(a, 0)
-	copy(a[i+1:], a[i:])
-	fmt.Println(a)
+	list := new([]int)
 
+	*list = append(*list, 1)
+
+	fmt.Println(DeferFunc3(1))
+	//i := 1
+	//a := []int{1,3}
+	//a = append(a, 0)
+	//copy(a[i+1:], a[i:])
+	//fmt.Println(a)
 
 	// map 中间插入元素
 	//m := make([]int, 0, 0)

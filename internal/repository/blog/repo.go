@@ -11,11 +11,12 @@ type RepositoryInterface interface {
 }
 
 type BlogRepo struct {
+	RepositoryInterface
 	DB *gorm.DB
 }
 
 func NewBlogRepo(storage *storage.Storage) RepositoryInterface {
-	return &BlogRepo{storage.Default.DB}
+	return &BlogRepo{nil, storage.Default.DB}
 }
 
 func (b *BlogRepo) FindById(id int) (default_db.Blog, error) {
