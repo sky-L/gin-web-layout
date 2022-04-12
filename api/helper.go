@@ -18,7 +18,7 @@ func NewResponse(c *gin.Context, err error, data interface{}) {
 	res := &Response{Data: data}
 
 	switch typed := err.(type) {
-	case appcode.AppError:
+	case *appcode.AppError:
 		res.Code = typed.Code
 		res.Message = typed.Msg
 	default:
