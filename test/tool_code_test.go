@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"github.com/skylee/gin-web-layout/pkg/appcode"
 	"testing"
 )
 
@@ -27,11 +28,15 @@ func DeferFunc3(i int) (t int) {
 
 func TestDelSlice(t *testing.T) {
 
-	list := new([]int)
+	err := e1()
 
-	*list = append(*list, 1)
+	a, ok := err.(*appcode.AppError)
+	if !ok {
+		fmt.Println(a.Code)
+	}
 
-	fmt.Println(DeferFunc3(1))
+	fmt.Println(a.Msg)
+
 	//i := 1
 	//a := []int{1,3}
 	//a = append(a, 0)
@@ -66,7 +71,6 @@ func TestDelSlice(t *testing.T) {
 
 }
 
-func Inc() (v int) {
-	defer func() { v++ }()
-	return 42
+func e1() error {
+	return appcode.New(1, "11")
 }

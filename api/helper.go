@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/skylee/gin-web-layout/pkg/appcode"
 	"net/http"
 )
 
@@ -15,13 +16,19 @@ type Response struct {
 
 func NewResponse(c *gin.Context, err error, data interface{}) {
 	res := &Response{Data: data}
-	if err != nil {
-		res.Code = -1
-		res.Message = err.Error()
-		c.JSON(http.StatusOK, res)
-		return
+
+	switch typed := err.(type) {
+	case appcode.AppError:
+		res.Code = typed.Code
+		res.Message = typed.Msg
+	default:
+		if typed != nil {
+			res.Code = -1
+			res.Message = err.Error()
+		} else {
+			res.Code = SuccessCode
+			res.Message = "success"
+		}
 	}
-	res.Code = SuccessCode
-	res.Message = "操作成功"
 	c.JSON(http.StatusOK, res)
 }
