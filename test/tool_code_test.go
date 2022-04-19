@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/skylee/gin-web-layout/pkg/appcode"
 	"testing"
+	"time"
 )
 
 func D() (t int) {
@@ -28,14 +29,8 @@ func DeferFunc3(i int) (t int) {
 
 func TestDelSlice(t *testing.T) {
 
-	err := e1()
-
-	a, ok := err.(*appcode.AppError)
-	if !ok {
-		fmt.Println(a.Code)
-	}
-
-	fmt.Println(a.Msg)
+	t2 := time.Now().UnixNano() / 1e6
+	fmt.Println(t2)
 
 	//i := 1
 	//a := []int{1,3}

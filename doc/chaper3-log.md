@@ -14,10 +14,10 @@
 GOOS=linux GOARCH=amd64 go build -o $out/gin_web_layout main.go 
 ```
 
-#### logrus初始化
+#### logrus 初始化
 
 ```php
-
+    logrus.Info("loginfo")
 	rotate := &lumberjack.Logger{
 		Filename:   log.Filename,
 		MaxSize:    500, // 最大的文件2000M
@@ -26,5 +26,6 @@ GOOS=linux GOARCH=amd64 go build -o $out/gin_web_layout main.go
 	}
 	logrus.SetOutput(rotate)
 	
+	logrus.Info("loginfo2")
 ```
 
