@@ -3,8 +3,8 @@ package test
 import (
 	"fmt"
 	"github.com/skylee/gin-web-layout/pkg/appcode"
+	"strings"
 	"testing"
-	"time"
 )
 
 func D() (t int) {
@@ -29,8 +29,38 @@ func DeferFunc3(i int) (t int) {
 
 func TestDelSlice(t *testing.T) {
 
-	t2 := time.Now().UnixNano() / 1e6
-	fmt.Println(t2)
+	s := strings.Builder{}
+
+	s.WriteString("aaa")
+
+	fmt.Println(s.String())
+
+
+
+	//round := 10
+	//var wg sync.WaitGroup
+	//barrier := syncx.NewSingleFlight()
+	//wg.Add(round)
+	//for i := 0; i < round; i++ {
+	//	go func() {
+	//		defer wg.Done()
+	//		// 启用10个协程模拟获取缓存操作
+	//		val, err := barrier.Do("get_rand_int", func() (interface{}, error) {
+	//			time.Sleep(time.Second)
+	//			return rand.Int(), nil
+	//		})
+	//		if err != nil {
+	//			fmt.Println(err)
+	//		} else {
+	//			fmt.Println(val)
+	//		}
+	//	}()
+	//}
+	//wg.Wait()
+
+
+	//t2 := time.Now().UnixNano() / 1e6
+	//fmt.Println(t2)
 
 	//i := 1
 	//a := []int{1,3}

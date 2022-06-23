@@ -9,11 +9,11 @@ import (
 	"time"
 )
 
-type Mysql struct {
-	DB *gorm.DB
+type Storage struct {
+	db *gorm.DB
 }
 
-func NewMysql(db config.DB) *Mysql {
+func NewMysql(db config.DB) *Storage {
 	client := helper.Must(gorm.Open(mysql.Open(db.DataSourceName))).(*gorm.DB)
 	sqlDB := helper.Must(client.DB()).(*sql.DB)
 	sqlDB.SetMaxIdleConns(db.MaxIdleConns)
@@ -22,8 +22,8 @@ func NewMysql(db config.DB) *Mysql {
 
 	client.Debug()
 
-	s := &Mysql{
-		DB: client,
+	s := &Storage{
+		db: client,
 	}
 
 	return s
