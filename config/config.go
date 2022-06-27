@@ -14,7 +14,7 @@ type DB struct {
 }
 
 type MySqlConfig struct {
-	Default DB `mapstructure:"default"`
+	Default DB `mapstructure:"blog"`
 }
 
 type Config struct {

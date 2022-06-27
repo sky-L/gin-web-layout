@@ -1,29 +1,24 @@
 package blog
 
 import (
-	"github.com/skylee/gin-web-layout/internal/models/default_db"
+	"github.com/skylee/gin-web-layout/internal/models/blog"
 	"github.com/skylee/gin-web-layout/internal/storage"
-	"gorm.io/gorm"
+	"github.com/skylee/gin-web-layout/internal/storage/blog_storage"
 )
 
 type RepositoryInterface interface {
-	FindById(id int) (default_db.Blog, error)
+	FindById(id int) (*blog.Blog, error)
 }
 
 type BlogRepo struct {
 	RepositoryInterface
-	DB *gorm.DB
+	Storage *blog_storage.Storage
 }
 
 func NewBlogRepo(storage *storage.Storage) RepositoryInterface {
-	return &BlogRepo{nil, storage.Default.DB}
+	return &BlogRepo{nil, storage.Default}
 }
 
-func (b *BlogRepo) FindById(id int) (default_db.Blog, error) {
-	resp := default_db.Blog{}
-	err := b.DB.Where("id = ?", id).Find(&resp).Error
-	if err != nil {
-		return resp, err
-	}
-	return resp, nil
+func (b *BlogRepo) FindById(id int) (*blog.Blog, error) {
+	return b.Storage.FindById(id)
 }

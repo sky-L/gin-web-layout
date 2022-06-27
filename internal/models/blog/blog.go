@@ -1,4 +1,4 @@
-package default_db
+package blog
 
 type Blog struct {
 	Id   int    `gorm:"column:id"`

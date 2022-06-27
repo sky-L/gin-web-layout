@@ -1,8 +1,9 @@
-package default_db
+package blog_storage
 
 import (
 	"database/sql"
 	"github.com/skylee/gin-web-layout/config"
+	"github.com/skylee/gin-web-layout/internal/models/blog"
 	"github.com/thinkeridea/go-extend/helper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -27,4 +28,19 @@ func NewMysql(db config.DB) *Storage {
 	}
 
 	return s
+}
+
+func (s *Storage) FindById(id int) (*blog.Blog, error) {
+	resp := blog.Blog{}
+	err := s.db.Where("id = ?", id).First(&resp).Error
+
+	// never reach
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return &resp, nil
 }

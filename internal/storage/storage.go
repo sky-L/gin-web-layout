@@ -2,15 +2,15 @@ package storage
 
 import (
 	"github.com/skylee/gin-web-layout/config"
-	"github.com/skylee/gin-web-layout/internal/storage/default_db"
+	"github.com/skylee/gin-web-layout/internal/storage/blog_storage"
 )
 
 type Storage struct {
-	Default *default_db.Mysql
+	Default *blog_storage.Storage
 }
 
 func NewStorage(mysql config.MySqlConfig) *Storage {
 	return &Storage{
-		Default: default_db.NewMysql(mysql.Default),
+		Default: blog_storage.NewMysql(mysql.Default),
 	}
 }
