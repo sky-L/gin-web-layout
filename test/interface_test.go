@@ -73,3 +73,21 @@ func TestInterface(t *testing.T) {
 	c1 := NewComputer(InterCpu{}, IntelMemory{}, IntelCard{})
 	c1.Run()
 }
+
+func InArray(needle, haystack interface{}) bool {
+	switch key := needle.(type) {
+	case int:
+		for _, v := range haystack.([]int) {
+			if key == v {
+				return true
+			}
+		}
+	case string:
+		for _, v := range haystack.([]string) {
+			if key == v {
+				return true
+			}
+		}
+	}
+	return false
+}
