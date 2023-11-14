@@ -3,7 +3,7 @@ package http_client
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -54,7 +54,7 @@ func Get(uri string, respData interface{}, header map[string]string) error {
 		return fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, resp.StatusCode)
 	}
 
-	res, err := ioutil.ReadAll(resp.Body)
+	res, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func Post(uri string, data []byte, head map[string]string, respData interface{})
 		return fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
 
-	res, err := ioutil.ReadAll(response.Body)
+	res, err := io.ReadAll(response.Body)
 	if err != nil {
 		return err
 	}
